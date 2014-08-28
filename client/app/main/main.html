@@ -1,0 +1,27 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>Example: Pagination</h3>
+      <div class="col-md-12">
+        <ul class="pagination pull-right">
+          <li ng-class="{disabled: !resource.$link('prev')}"><a href ng-click="follow('prev')">&laquo;</a></li>
+          <li ng-repeat="s in resource.$link('section')" ng-class="{active: s.href === resource.$link('self').href}"><a href ng-click="section(s)">{{s.title}}</a></li>
+          <li ng-class="{disabled: !resource.$link('next')}"><a href ng-click="follow('next')">&raquo;</a></li>
+        </ul>
+      </div>
+      <ul class="nav nav-tabs nav-stacked col-md-6 col-lg-6 col-sm-6" ng-repeat="thing in resource.things">
+        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+      <p>angular-hyper-resource sample app |
+        <a href="https://twitter.com/petejohanson">@petejohanson</a> |
+         <a href="https://github.com/petejohanson/angular-hyper-resource/issues?state=open">Issues</a></p>
+  </div>
+</footer>
