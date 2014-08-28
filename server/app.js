@@ -13,6 +13,8 @@ var config = require('./config/environment');
 var app = express();
 var server = require('http').createServer(app);
 require('./config/express')(app);
+var hal = require('express-hal');
+app.use(hal.middleware);
 require('./routes')(app);
 
 // Start server

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularHyperResourceExampleApp')
+angular.module('angularHyResExampleApp')
   .controller('NavbarCtrl', function ($scope, $location) {
     $scope.menu = [{
       'title': 'Home',

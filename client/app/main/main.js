@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularHyperResourceExampleApp')
+angular.module('angularHyResExampleApp')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularHyperResourceExampleApp')
+angular.module('angularHyResExampleApp')
   .controller('MainCtrl', function ($scope, $http, hrResource) {
     $scope.resource = hrResource('/api/things').get();
 

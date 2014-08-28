@@ -26,7 +26,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'angular-hyper-resource-example-secret'
+    session: 'angular-hy-res-example-secret'
   },
 
   // List of user roles

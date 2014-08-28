@@ -19,7 +19,7 @@ module.exports = function(config) {
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'client/bower_components/angular-hyper-resource/dist/angular-hyper-resource-full.js',
+      'client/bower_components/angular-hy-res/dist/angular-hy-res-full.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/app/app.js',
       'client/app/app.coffee',

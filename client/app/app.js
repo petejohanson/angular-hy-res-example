@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('angularHyperResourceExampleApp', [
+angular.module('angularHyResExampleApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
-  'angular-hyper-resource-hal'
+  'angular-hy-res-hal'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
