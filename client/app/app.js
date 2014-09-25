@@ -6,7 +6,8 @@ angular.module('angularHyResExampleApp', [
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
-  'angular-hy-res-hal'
+  'angular-hy-res-hal',
+  'angular-hy-res-link-header'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider

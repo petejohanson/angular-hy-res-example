@@ -7,10 +7,13 @@ var hal = require('express-hal');
 
 // Get list of things
 exports.index = function(req, res) {
-  res.hal({
+  res.type('application/hal+json').hal({
     links: {
       self: req.originalUrl,
-      'thing-collection': '/api/things/'
+      'things': [
+        { href: '/api/things', type: 'application/hal+json', title: 'HAL Embedded' },
+        { href: '/api/things', type: 'application/json', title: 'Link Headers' }
+      ]
     }
   });
 };

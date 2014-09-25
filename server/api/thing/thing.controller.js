@@ -1,11 +1,3 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
 
 'use strict';
 
@@ -43,30 +35,77 @@ exports.page = function(req, res) {
     thingsSubset.push(things[i]);
   }
 
-  var ret = {
-    _links: {
-      self: { href: req.originalUrl },
-    },
-    things: thingsSubset
-  };
+  var next = null,
+    prev = null;
 
   if (pageNum > 1) {
-    ret._links.prev = { href: '/api/things/page/' + (pageNum - 1) };
+    prev = '/api/things/page/' + (pageNum - 1);
   }
 
   if (pageNum < 3) {
-    ret._links.next = { href: '/api/things/page/' + (pageNum + 1) };
+    next = '/api/things/page/' + (pageNum + 1);
   }
 
-  ret._links.section = [];
+  var sections = [];
+
   for(i = 1; i <= 3; i++) {
-    ret._links.section.push({
+    sections.push({
       href: '/api/things/page/' + i,
       title: i+''
     });
   }
+  res.format({
+    'application/json': function() {
+      var links = {
+        self: req.originalUrl
+      };
+      if (next) {
+        links.next = next;
+      }
+      if (prev) {
+        links.prev = prev;
+      }
 
-  res.type('application/hal+json').send(ret);
+      res.links(links);
+
+      if (sections.length > 0) {
+        var lh = res.get('Link') + ', ';
+        var s = sections[i];
+
+        res.set('Link', lh + sections.map(function(s) {
+          return '<' + s.href + '>; rel="section"; title="' + s.title + '"';
+        }).join(', '));
+      }
+
+      res.json({
+        things: thingsSubset
+      });
+    },
+    'application/hal+json': function() {
+      for (var i = 0; i < sections.length; i++) {
+        sections[i].type = 'application/hal+json';
+      }
+      var links = {
+        self: req.originalUrl,
+        section: sections
+      };
+
+      if (next) {
+        links.next = { href: next, type: 'application/hal+json' };
+      }
+
+      if (prev) {
+        links.prev = { href: prev, type: 'application/hal+json' };
+      }
+
+      res.type('application/hal+json').hal({
+        links: links,
+        data: {
+          things: thingsSubset
+        }
+      });
+    }
+  });
 };
 
 // Get list of things
