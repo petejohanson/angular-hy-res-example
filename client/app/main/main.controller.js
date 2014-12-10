@@ -5,9 +5,14 @@ angular.module('angularHyResExampleApp')
     $scope.root = new hrRoot('/api').follow();
 
     $scope.root.$promise.then(function(r) {
-      $scope.type = r.$link('things')[0];
+      $scope.type = r.$links('things')[0];
     });
     $scope.resource = null;
+
+    var updateResource = function(r) {
+      $scope.resource = r;
+      $scope.items = r.$followAll('item');
+    };
 
     $scope.$watch('type', function(type) {
       if (!type) {
@@ -15,15 +20,11 @@ angular.module('angularHyResExampleApp')
         return;
       }
 
-      $scope.resource = type.follow();
+      updateResource(type.follow());
     });
 
     $scope.follow = function(rel) {
-      if (!$scope.resource.$link(rel)) {
-        return;
-      }
-
-      $scope.resource = $scope.resource.$follow(rel);
+      updateResource($scope.resource.$followOne(rel));
     };
 
     $scope.section = function(s) {
@@ -31,6 +32,6 @@ angular.module('angularHyResExampleApp')
         return;
       }
 
-      $scope.resource = $scope.resource.$followLink(s);
+      updateResource(s.follow());
     };
   });

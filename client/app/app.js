@@ -7,7 +7,9 @@ angular.module('angularHyResExampleApp', [
   'ngRoute',
   'ui.bootstrap',
   'angular-hy-res-hal',
-  'angular-hy-res-link-header'
+  'angular-hy-res-siren',
+  'angular-hy-res-link-header',
+  'angular-hy-res-json'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider

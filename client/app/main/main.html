@@ -10,7 +10,7 @@
       <div class="pull-left" style="padding: 6px 12px; margin: 20px;">
         <div>
           <span>Type:</span>
-          <select ng-model="type" ng-options="t.title for t in root.$link('things')"></select>
+          <select ng-model="type" ng-options="t.title for t in root.$links('things')"></select>
         </div>
       </div>
       <div class="pull-right">
@@ -18,7 +18,7 @@
           <li ng-class="{disabled: !resource.$link('prev')}">
             <a href ng-click="follow('prev')">&laquo;</a>
           </li>
-          <li ng-repeat="s in resource.$link('section')"
+          <li ng-repeat="s in resource.$links('section')"
               ng-class="{active: s.href === resource.$link('self').href}">
             <a href ng-click="section(s)">{{s.title}}</a>
           </li>
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs nav-stacked col-md-6 col-lg-6 col-sm-6"
-          ng-repeat="thing in resource.things">
+          ng-repeat="thing in items">
         <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
       </ul>
     </div>

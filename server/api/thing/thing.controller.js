@@ -25,6 +25,18 @@ var things = [
   }
 ];
 
+exports.item = function(req, res) {
+  var n = parseInt(req.params.num);
+  if (n < 0 || n > things.length) {
+    res.status(404).send('');
+    return;
+  }
+
+  var t = things[n];
+
+  res.json(t);
+};
+
 exports.page = function(req, res) {
   var pageNum = parseInt(req.params.num);
   var start = (pageNum - 1) * 2;
@@ -54,6 +66,8 @@ exports.page = function(req, res) {
       title: i+''
     });
   }
+
+  var SIREN_TYPE = 'application/vnd.siren+json';
   res.format({
     'application/json': function() {
       var links = {
@@ -77,9 +91,12 @@ exports.page = function(req, res) {
         }).join(', '));
       }
 
-      res.json({
-        things: thingsSubset
-      });
+      for(var j = 0; j < thingsSubset.length; j++) {
+        var l = res.get('Link') + ', ';
+	res.set('Link', l + '</api/things/thing/' + (start + j) + '>; rel="item"');
+      }
+
+      res.status(204).send('');
     },
     'application/hal+json': function() {
       for (var i = 0; i < sections.length; i++) {
@@ -100,9 +117,34 @@ exports.page = function(req, res) {
 
       res.type('application/hal+json').hal({
         links: links,
-        data: {
-          things: thingsSubset
+        embeds: {
+	  'item': thingsSubset
         }
+      });
+    },
+    'application/vnd.siren+json': function() {
+      var links = [
+        { rel: ['self'], href: req.originalUrl, type: SIREN_TYPE }
+      ];
+      if (next) {
+        links.push({ rel: ['next'], href: next, type: SIREN_TYPE });
+      }
+
+      if (prev) {
+        links.push({ rel: ['prev'], href: prev, type: SIREN_TYPE });
+      }
+      res.type('application/vnd.siren+json').send({
+        links: links,
+        entities: thingsSubset.map(function(t) {
+          return {
+            rel: ['item'],
+            links: [ { rel: 'self', href: t.href } ],
+            properties: {
+              name: t.name,
+              info: t.info
+            }
+          };
+	})
       });
     }
   });
@@ -112,4 +154,5 @@ exports.page = function(req, res) {
 exports.index = function(req, res) {
   res.redirect('/api/things/page/1');
 };
+
 
