@@ -24,7 +24,7 @@ angular.module('angularHyResExampleApp')
     });
 
     $scope.follow = function(rel) {
-      if (!$scope.resource.$if(rel)) {
+      if (!$scope.resource.$has(rel)) {
         return;
       }
       updateResource($scope.resource.$followOne(rel));
