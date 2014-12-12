@@ -15,14 +15,14 @@
       </div>
       <div class="pull-right">
         <ul class="pagination">
-          <li ng-class="{disabled: !resource.$link('prev')}">
+          <li ng-class="{disabled: !resource.$if('prev')}">
             <a href ng-click="follow('prev')">&laquo;</a>
           </li>
           <li ng-repeat="s in resource.$links('section')"
               ng-class="{active: s.href === resource.$link('self').href}">
             <a href ng-click="section(s)">{{s.title}}</a>
           </li>
-          <li ng-class="{disabled: !resource.$link('next')}">
+          <li ng-class="{disabled: !resource.$if('next')}">
             <a href ng-click="follow('next')">&raquo;</a>
           </li>
         </ul>
