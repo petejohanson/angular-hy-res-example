@@ -42,6 +42,10 @@ exports.page = function(req, res) {
   var start = (pageNum - 1) * 2;
   var end = pageNum * 2;
   var thingsSubset = [];
+  var embed = '';
+  if (req.query.embed) {
+    embed = '?embed=true';
+  }
 
   for (var i = start; i < things.length && i < end; ++i) {
     thingsSubset.push(things[i]);
@@ -51,18 +55,18 @@ exports.page = function(req, res) {
     prev = null;
 
   if (pageNum > 1) {
-    prev = '/api/things/page/' + (pageNum - 1);
+    prev = '/api/things/page/' + (pageNum - 1) + embed;
   }
 
   if (pageNum < 3) {
-    next = '/api/things/page/' + (pageNum + 1);
+    next = '/api/things/page/' + (pageNum + 1) + embed;
   }
 
   var sections = [];
 
   for(i = 1; i <= 3; i++) {
     sections.push({
-      href: '/api/things/page/' + i,
+      href: '/api/things/page/' + i + embed,
       title: i+''
     });
   }
@@ -84,7 +88,6 @@ exports.page = function(req, res) {
 
       if (sections.length > 0) {
         var lh = res.get('Link') + ', ';
-        var s = sections[i];
 
         res.set('Link', lh + sections.map(function(s) {
           return '<' + s.href + '>; rel="section"; title="' + s.title + '"';
@@ -115,11 +118,22 @@ exports.page = function(req, res) {
         links.prev = { href: prev, type: 'application/hal+json' };
       }
 
+      var embeds = {};
+
+      if (req.query.embed) {
+        embeds.item = thingsSubset;
+      } else {
+        links.item = [];
+        for(var j = 0; j < thingsSubset.length; j++) {
+          links.item.push({
+            href: '/api/things/thing/' + (start + j)
+          });
+        }
+      }
+
       res.type('application/hal+json').hal({
         links: links,
-        embeds: {
-	  'item': thingsSubset
-        }
+        embeds: embeds
       });
     },
     'application/vnd.siren+json': function() {
@@ -133,18 +147,27 @@ exports.page = function(req, res) {
       if (prev) {
         links.push({ rel: ['prev'], href: prev, type: SIREN_TYPE });
       }
+
       res.type('application/vnd.siren+json').send({
         links: links,
-        entities: thingsSubset.map(function(t) {
-          return {
-            rel: ['item'],
-            links: [ { rel: 'self', href: t.href } ],
-            properties: {
-              name: t.name,
-              info: t.info
-            }
+        entities: thingsSubset.map(function(t, i) {
+          var href = '/api/things/thing/' + (start + i);
+          var ret = {
+            rel: ['item']
           };
-	})
+
+          if (req.query.embed) {
+            ret.links = [ { rel: 'self', href: href } ];
+            ret.properties = {
+              name: t.name,
+                info: t.info
+            };
+          } else {
+            ret.href = href;
+          }
+
+          return ret;
+        })
       });
     }
   });
@@ -152,7 +175,11 @@ exports.page = function(req, res) {
 
 // Get list of things
 exports.index = function(req, res) {
-  res.redirect('/api/things/page/1');
+  var page1 = '/api/things/page/1';
+  if (req.query.embed) {
+    page1 += '?embed=true';
+  }
+  res.redirect(page1);
 };
 
 

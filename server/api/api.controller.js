@@ -11,8 +11,10 @@ exports.index = function(req, res) {
     links: {
       self: req.originalUrl,
       'things': [
-        { href: '/api/things', type: 'application/hal+json', title: 'HAL Embedded' },
-        { href: '/api/things', type: 'application/vnd.siren+json', title: 'Siren' },
+        { href: '/api/things', type: 'application/hal+json', title: 'HAL Linked' },
+        { href: '/api/things?embed=true', type: 'application/hal+json', title: 'HAL Embedded' },
+        { href: '/api/things', type: 'application/vnd.siren+json', title: 'Siren Linked' },
+        { href: '/api/things?embed=true', type: 'application/vnd.siren+json', title: 'Siren Embedded' },
         { href: '/api/things', type: 'application/json', title: 'Link Headers' }
       ]
     }
