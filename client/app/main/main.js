@@ -5,6 +5,11 @@ angular.module('angularHyResExampleApp')
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        resolve: {
+          root: function(hrRoot) {
+            return new hrRoot('/api').follow().$promise;
+          }
+        }
       });
   });

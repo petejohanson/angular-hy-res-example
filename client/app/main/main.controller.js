@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('angularHyResExampleApp')
-  .controller('MainCtrl', function ($scope, $http, hrRoot) {
-    $scope.root = new hrRoot('/api').follow();
+  .controller('MainCtrl', function ($scope, $http, root) {
+    $scope.root = root;
 
-    $scope.root.$promise.then(function(r) {
+    root.$promise.then(function(r) {
       $scope.type = r.$links('things')[0];
     });
     $scope.resource = null;
