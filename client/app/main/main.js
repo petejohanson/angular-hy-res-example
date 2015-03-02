@@ -8,6 +8,7 @@ angular.module('angularHyResExampleApp')
         controller: 'MainCtrl',
         resolve: {
           root: function(hrRoot) {
+            /*jshint newcap: false */
             return new hrRoot('/api').follow().$promise;
           }
         }

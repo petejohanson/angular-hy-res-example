@@ -3,10 +3,7 @@
 angular.module('angularHyResExampleApp')
   .controller('MainCtrl', function ($scope, $http, root) {
     $scope.root = root;
-
-    root.$promise.then(function(r) {
-      $scope.type = r.$links('things')[0];
-    });
+    $scope.type = root.$links('things')[0];
     $scope.resource = null;
 
     var updateResource = function(r) {
