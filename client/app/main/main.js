@@ -9,7 +9,7 @@ angular.module('angularHyResExampleApp')
         resolve: {
           root: function(hrRoot) {
             /*jshint newcap: false */
-            return new hrRoot('/api').follow().$promise;
+            return hrRoot('/api').follow().$promise;
           }
         }
       });
