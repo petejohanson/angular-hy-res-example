@@ -6,10 +6,10 @@ angular.module('angularHyResExampleApp', [
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
-  'angular-hy-res-hal',
-  'angular-hy-res-siren',
-  'angular-hy-res-link-header',
-  'angular-hy-res-json'
+  'hrHal',
+  'hrSiren',
+  'hrLinkHeader',
+  'hrJson'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
